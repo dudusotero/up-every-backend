@@ -7,6 +7,13 @@ class BoxController {
     return res.json(box);
   }
 
+  async list(req, res) {
+    const { page = 1, limit = 10 } = req.query;
+    const boxes = await Box.paginate({}, { page, limit, populate: ["files"] });
+
+    return res.json(boxes);
+  }
+
   async show(req, res) {
     const box = await Box.findById(req.params.id).populate({
       path: "files",
